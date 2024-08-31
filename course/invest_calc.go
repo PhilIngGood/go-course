@@ -1,0 +1,26 @@
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	const inflationRate float64 = 2.5
+	var investAmount, years, expectedReturnRate float64
+
+	fmt.Print("Enter the investment amount: ")
+	fmt.Scan(&investAmount)
+
+	fmt.Print("Number of years: ")
+	fmt.Scan(&years)
+
+	fmt.Print("Expected return rate: ")
+	fmt.Scan(&expectedReturnRate)
+
+	futureValue := investAmount * math.Pow(1+expectedReturnRate/100, years)
+	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
+
+	fmt.Println(futureValue)
+	fmt.Println(futureRealValue)
+}
