@@ -21,12 +21,18 @@ func main() {
 	futureValue := investAmount * math.Pow(1+expectedReturnRate/100, years)
 	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
 
-	formatedFV := fmt.Sprintf("Future value: %.2f\n", futureValue)
-	formatedFRV := fmt.Sprintf("Future value considering inflation: %.2f\n", futureRealValue)
+	// Format strings and store them
+	// formatedFV := fmt.Sprintf("Future value: %.2f\n", futureValue)
+	// formatedFRV := fmt.Sprintf("Future value considering inflation: %.2f\n", futureRealValue)
+	// fmt.Print(formatedFV, formatedFRV)
 	// Output informations
 	// fmt.Println("Future value:", futureValue)
 	// fmt.Println("Future value considering inflation:", futureRealValue)
-	//fmt.Printf("Future value: %.2f\nFuture value considering inflation: %.2f\n", futureValue, futureRealValue)
+	// Using printf to format and print values 	https://pkg.go.dev/fmt@go1.23.0#Printf
+	// fmt.Printf("Future value: %.2f\nFuture value considering inflation: %.2f\n", futureValue, futureRealValue)
 
-	fmt.Print(formatedFV, formatedFRV)
+	// Backtick string example
+	fmt.Printf(`Future value: %.2f
+Future value considering inflation: %.2f`, futureValue, futureRealValue)
+
 }
