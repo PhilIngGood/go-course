@@ -22,7 +22,7 @@ func main() {
 	profit := EBT * (1 - taxRate/100)
 	ratio := EBT / profit
 
-	fmt.Println("Profit: ", profit)
-	fmt.Println("Ratio: ", ratio)
+	fmt.Println("Profit:", profit)
+	fmt.Println("Ratio:", ratio)
 
 }
