@@ -5,8 +5,9 @@ import (
 	"math"
 )
 
+const inflationRate float64 = 2.5
+
 func main() {
-	const inflationRate float64 = 2.5
 	var investAmount, years, expectedReturnRate float64
 
 	fmt.Print("Enter the investment amount: ")
@@ -18,8 +19,10 @@ func main() {
 	fmt.Print("Expected return rate: ")
 	fmt.Scan(&expectedReturnRate)
 
-	futureValue := investAmount * math.Pow(1+expectedReturnRate/100, years)
-	futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
+	futureValue, futureRealValue := calculateFutureValues(investAmount, expectedReturnRate, years)
+
+	// futureValue := investAmount * math.Pow(1+expectedReturnRate/100, years)
+	// futureRealValue := futureValue / math.Pow(1+inflationRate/100, years)
 
 	// Format strings and store them
 	// formatedFV := fmt.Sprintf("Future value: %.2f\n", futureValue)
@@ -35,4 +38,25 @@ func main() {
 	fmt.Printf(`Future value: %.2f
 Future value considering inflation: %.2f`, futureValue, futureRealValue)
 
+}
+
+// fmt.print wrapper, just as an example
+func uselessFunc(text string) {
+	fmt.Print(text)
+}
+
+func calculateFutureValues(investAmount, expectedReturnRate, years float64) (float64, float64) {
+	futureValueResult := investAmount * math.Pow(1+expectedReturnRate/100, years)
+	realFuturevalue := futureValueResult / math.Pow(1+inflationRate/100, years)
+
+	return futureValueResult, realFuturevalue
+}
+
+// Alternative way to create return values
+func calculateFutureValues_bis(investAmount, expectedReturnRate, years float64) (futureValueResult float64, realFuturevalue float64) {
+	futureValueResult = investAmount * math.Pow(1+expectedReturnRate/100, years)
+	realFuturevalue = futureValueResult / math.Pow(1+inflationRate/100, years)
+
+	//return futureValueResult, realFuturevalue
+	return
 }
