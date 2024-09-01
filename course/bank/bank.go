@@ -20,10 +20,10 @@ func main() {
 		fmt.Print("Your choice: ")
 		fmt.Scan(&choice)
 
-		if choice == 1 {
+		switch choice {
+		case 1:
 			fmt.Println("Your balance is", accountBalance)
-
-		} else if choice == 2 {
+		case 2:
 			var depositeAmount float64
 			fmt.Print("Your deposite: ")
 			fmt.Scan(&depositeAmount)
@@ -32,11 +32,7 @@ func main() {
 				fmt.Println("Wrong amount, can't be null or lesser than 0")
 				continue
 			}
-
-			accountBalance += depositeAmount
-			fmt.Println("New blance amount:", accountBalance)
-
-		} else if choice == 3 {
+		case 3:
 			var withdrawAmount float64
 			fmt.Print("Your withdraw: ")
 			fmt.Scan(&withdrawAmount)
@@ -53,13 +49,10 @@ func main() {
 
 			accountBalance -= withdrawAmount
 			fmt.Println("New blance amount:", accountBalance)
-
-		} else {
+		default:
 			fmt.Println("Goodbye !")
-			// return
-			break
+			fmt.Println("Thanks for choosing GoBank")
+			return
 		}
 	}
-
-	fmt.Println("Thanks for choosing GoBank")
 }
