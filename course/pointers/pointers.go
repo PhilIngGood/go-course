@@ -7,11 +7,13 @@ func main() {
 	agePointer := &age
 	fmt.Println("Age:", *agePointer)
 
-	fmt.Println(getAdultYears(agePointer))
+	editAgeToAdultYears(agePointer)
+	fmt.Println(age)
 }
 
-func getAdultYears(age *int) int {
-	return *age - 18
+func editAgeToAdultYears(age *int) {
+	*age = *age - 18
+	// return *age - 18
 }
 
 // The only benefit of using pointers like so is to avoid variable to get copied multiples times
