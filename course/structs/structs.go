@@ -2,15 +2,9 @@ package main
 
 import (
 	"fmt"
-	"time"
-)
 
-type User struct {
-	firstName string
-	lastName  string
-	birthDate string
-	createdAt time.Time
-}
+	"course.go/structs/user"
+)
 
 func main() {
 	userFirtName := getUserData("Please enter your first name: ")
@@ -18,14 +12,14 @@ func main() {
 	userBirthDate := getUserData("Please enter your birthdate (DD/MM/YYYY): ")
 
 	// ... do something, anything will do
-	var appUser User = User{
-		firstName: userFirtName,
-		lastName:  userLastName,
-		birthDate: userBirthDate,
-		createdAt: time.Now(),
-		// Values can be omitted and the default value will be choosen1
-	}
 
+	var appUser *user.User
+	appUser, err := user.New(userFirtName, userLastName, userBirthDate)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// This notation can also be used, to shorten the writting time
 	// appUser = User{
 	// 	userFirtName,
@@ -37,16 +31,15 @@ func main() {
 	// Empty structs can also be called
 	// appUser = user{}
 
-	outputUserDetails(&appUser)
-}
+	appUser.OutputUserDetails()
+	appUser.ClearUserName()
+	appUser.OutputUserDetails()
 
-func outputUserDetails(u *User) {
-	fmt.Println(u.firstName, u.lastName, u.birthDate)
 }
 
 func getUserData(promptText string) string {
 	fmt.Print(promptText)
 	var value string
-	fmt.Scan(&value)
+	fmt.Scanln(&value)
 	return value
 }
