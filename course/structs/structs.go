@@ -6,6 +6,14 @@ import (
 	"course.go/structs/user"
 )
 
+// Alias to  string type
+type str string
+
+// Method to custom string
+func (text str) log() {
+	fmt.Println(text)
+}
+
 func main() {
 	userFirtName := getUserData("Please enter your first name: ")
 	userLastName := getUserData("Please enter your last name: ")
@@ -20,20 +28,20 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	// This notation can also be used, to shorten the writting time
-	// appUser = User{
-	// 	userFirtName,
-	// 	userLastName,
-	// 	userBirthDate,
-	// 	time.Now(),
-	// }
 
-	// Empty structs can also be called
-	// appUser = user{}
+	admin := user.NewAdmin("test@example.com", "test123")
+
+	admin.OutputUserDetails()
+	admin.ClearUserName()
+	admin.OutputUserDetails()
 
 	appUser.OutputUserDetails()
 	appUser.ClearUserName()
 	appUser.OutputUserDetails()
+
+	// Custom string type example
+	var name str = "Phil"
+	name.log()
 
 }
 
