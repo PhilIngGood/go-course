@@ -1,4 +1,4 @@
-package main
+package list
 
 import "fmt"
 
@@ -8,8 +8,12 @@ func main() {
 
 	fmt.Println(prices[0:1])
 
-	udatedPrices := append(prices, 5.98)
+	udatedPrices := append(prices, 5.98, 12.99)
 	fmt.Println(udatedPrices)
+
+	discountPrices := []float64{101.99, 85.99, 20.59}
+	prices = append(prices, discountPrices...)
+	fmt.Println(prices)
 }
 
 // func main() {

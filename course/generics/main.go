@@ -32,7 +32,7 @@ func checkValueType(value interface{}) {
 
 }
 
-// Geeneric example
+// Generic example
 func add[T int | float64 | float32 | string](a, b T) T {
 	return a + b
 }
