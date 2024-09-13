@@ -26,6 +26,8 @@ func (fm FileManager) ReadFiles() ([]string, error) {
 	if err != nil {
 		return nil, errors.New("couldn't open a file")
 	}
+	// Go will not execute this close() now, it will wait for the Readfile function to end, then close the file
+	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	fileContent := []string{}
@@ -36,11 +38,9 @@ func (fm FileManager) ReadFiles() ([]string, error) {
 
 	// Scanner error handling
 	if scanner.Err() != nil {
-		file.Close()
 		return nil, errors.New("couldn't scan a file")
 	}
 
-	file.Close()
 	return fileContent, nil
 
 }
@@ -51,6 +51,7 @@ func (fm FileManager) WriteResult(data any) error {
 	if err != nil {
 		return errors.New("couldn't create file")
 	}
+	defer file.Close()
 
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(data)
@@ -59,7 +60,6 @@ func (fm FileManager) WriteResult(data any) error {
 		return errors.New("couldn't encode to JSON")
 	}
 
-	file.Close()
 	return nil
 
 }

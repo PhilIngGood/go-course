@@ -21,10 +21,11 @@ func NewTaxIncludedPriceJob(IO iomanager.IOManager, taxRate float64) *TaxInclude
 	}
 }
 
-func (job *TaxIncludedPriceJob) Process(doneChan chan bool) {
+func (job *TaxIncludedPriceJob) Process(doneChan chan bool, errorChan chan error) {
 	err := job.loadPrices()
 
 	if err != nil {
+		errorChan <- err
 		return
 	}
 
