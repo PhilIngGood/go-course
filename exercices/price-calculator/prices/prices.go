@@ -4,25 +4,30 @@ import (
 	"fmt"
 
 	"course.go/price-calculator/conversion"
-	"course.go/price-calculator/filemanager"
+	"course.go/price-calculator/iomanager"
 )
 
-const pricesFile = "prices.txt"
-
 type TaxIncludedPriceJob struct {
-	TaxRate           float64
-	Prices            []float64
-	TaxIncludedPrices map[string]string
+	IOManager         iomanager.IOManager `json:"-"`
+	TaxRate           float64             `json:"tax_rate"`
+	Prices            []float64           `json:"prices"`
+	TaxIncludedPrices map[string]string   `json:"tax_included_prices"`
 }
 
-func NewTaxIncludedPriceJob(taxRate float64) *TaxIncludedPriceJob {
+func NewTaxIncludedPriceJob(IO iomanager.IOManager, taxRate float64) *TaxIncludedPriceJob {
 	return &TaxIncludedPriceJob{
-		TaxRate: taxRate,
+		IOManager: IO,
+		TaxRate:   taxRate,
 	}
 }
 
-func (job *TaxIncludedPriceJob) Process() {
-	job.loadPrices(pricesFile)
+func (job *TaxIncludedPriceJob) Process() error {
+	err := job.loadPrices()
+
+	if err != nil {
+		return err
+	}
+
 	results := make(map[string]string, len(job.Prices))
 	for _, price := range job.Prices {
 
@@ -31,24 +36,24 @@ func (job *TaxIncludedPriceJob) Process() {
 	}
 
 	job.TaxIncludedPrices = results
-	filemanager.WriteJSON(job, fmt.Sprintf("result_%.0f.json", job.TaxRate*100))
+	return job.IOManager.WriteResult(job)
 }
 
 // Func to load prices to
-func (job *TaxIncludedPriceJob) loadPrices(pricesFile string) {
-	readFile, err := filemanager.ReadFiles(pricesFile)
+func (job *TaxIncludedPriceJob) loadPrices() error {
+	readFile, err := job.IOManager.ReadFiles()
 
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 
 	pricesConverted, err := conversion.SliceStringToSliceFloat64(readFile)
 
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 
 	job.Prices = pricesConverted
+
+	return nil
 }

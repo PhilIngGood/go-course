@@ -7,12 +7,24 @@ import (
 	"os"
 )
 
-func ReadFiles(filename string) ([]string, error) {
-	file, err := os.Open(filename)
+type FileManager struct {
+	InputFilePath  string
+	OutputFilePath string
+}
+
+func New(InputFilePath, OutputFilePath string) FileManager {
+	return FileManager{
+		InputFilePath:  InputFilePath,
+		OutputFilePath: OutputFilePath,
+	}
+}
+
+func (fm FileManager) ReadFiles() ([]string, error) {
+	file, err := os.Open(fm.InputFilePath)
 
 	// File openning error handling
 	if err != nil {
-		return nil, errors.New("an error occured openning file")
+		return nil, errors.New("couldn't open a file")
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -25,7 +37,7 @@ func ReadFiles(filename string) ([]string, error) {
 	// Scanner error handling
 	if scanner.Err() != nil {
 		file.Close()
-		return nil, errors.New("an error occured scanning file")
+		return nil, errors.New("couldn't scan a file")
 	}
 
 	file.Close()
@@ -33,18 +45,18 @@ func ReadFiles(filename string) ([]string, error) {
 
 }
 
-func WriteJSON(data any, filename string) error {
-	file, err := os.Create(filename)
+func (fm FileManager) WriteResult(data any) error {
+	file, err := os.Create(fm.OutputFilePath)
 
 	if err != nil {
-		return errors.New("an error occured creating file")
+		return errors.New("couldn't create file")
 	}
 
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(data)
 
 	if err != nil {
-		return errors.New("an error occured encoding to JSON")
+		return errors.New("couldn't encode to JSON")
 	}
 
 	file.Close()
