@@ -1,12 +1,14 @@
 package models
 
 import (
+	"errors"
+
 	"course.go/restapi/db"
 	"course.go/restapi/utils"
 )
 
 type Users struct {
-	id       int64
+	Id       int64
 	Name     string
 	Email    string `binding:"required"`
 	Password string `binding:"required"`
@@ -34,7 +36,26 @@ func (u Users) Save() error {
 
 	userID, err := result.LastInsertId()
 
-	u.id = userID
+	u.Id = userID
 
 	return err
+}
+
+func (u Users) ValidatedCredentials() error {
+	query := "SELECT id, password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+
+	var retreivedPwd string
+	err := row.Scan(&u.Id, &retreivedPwd)
+
+	if err != nil {
+		return errors.New("credentials invalid")
+	}
+
+	if !(utils.ComparePwdHash(u.Password, retreivedPwd)) {
+		return errors.New("credentials invalid")
+	}
+
+	return nil
+
 }

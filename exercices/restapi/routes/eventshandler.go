@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"course.go/restapi/models"
+	"course.go/restapi/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,16 +38,27 @@ func getEvents(c *gin.Context) {
 }
 
 func createEvents(c *gin.Context) {
-	var event models.Event
-	err := c.ShouldBindJSON(&event)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "could not parse request data"})
+	token := c.Request.Header.Get("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "You are not allowed to perform this action", "error": "Empty token"})
 		return
 	}
 
-	event.ID = 1
-	event.UserID = 1
+	userid, err := utils.ValidateJWT(token)
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "You are not allowed to perform this action", "error": "Invalid token"})
+		return
+	}
+	var event models.Event
+	err = c.ShouldBindJSON(&event)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "could not parse request data", "error": err.Error()})
+		return
+	}
+
+	event.UserID = userid
 	c.JSON(http.StatusCreated, gin.H{"message": "Event created", "event": event})
 	err = event.Save()
 
@@ -106,6 +118,7 @@ func deleteEvent(c *gin.Context) {
 
 	if event.DeleteEvent() != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete event"})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "event deleted ", "event": event})

@@ -1,9 +1,11 @@
 POST http://127.0.0.1:8080/events
-# content-type: application/json
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdvb2QuY29tIiwiZXhwIjoxNzI2MzQ5NzY3LCJ1c2VySWQiOjB9.UU8KQmHtc8F_6_J4YLES9YubPUaTx0aBLb9Gm5Jg0CY
+
 
 {
-	"title": "endOfOurWorld",
+	"title": "IAWillTakeOurJobs",
 	"description": "That sucks man!",
-	"location": "Our planet Earth",
+	"location": "NearFuture",
 	"datetime": "2035-01-01T15:30:00Z"
 }
