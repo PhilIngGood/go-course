@@ -48,7 +48,7 @@ func ValidateJWT(token string) (int64, error) {
 	}
 
 	// email := claims["email"].(string)
-	userID := claims["userId"].(int64)
+	userID := int64(claims["userId"].(float64))
 
 	return userID, nil
 

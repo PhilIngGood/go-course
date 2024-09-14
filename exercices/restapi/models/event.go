@@ -26,7 +26,7 @@ type Event struct {
 // 	}
 // }
 
-func (e Event) Save() error {
+func (e *Event) Save() error {
 	insertEvent := "INSERT INTO events(name, description, location, dateTime, user_id) VALUES (?, ?, ?, ?, ?);"
 
 	// Preparation of the insertion, can protect against sql injection
@@ -43,14 +43,14 @@ func (e Event) Save() error {
 		return err
 	}
 
-	// Grabing the ID returned by the "KEY AUTOINCREMENT"
+	// Grabing the ID returned by the "AUTOINCREMENT"
 	id, err := result.LastInsertId()
 	e.ID = id
 
 	return err
 }
 
-func (e Event) Update() error {
+func (e *Event) Update() error {
 	query := `
 	UPDATE events
 	SET name = ?, description = ?, location = ?, dateTime = ?

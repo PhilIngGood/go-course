@@ -1,11 +1,11 @@
 POST http://127.0.0.1:8080/events
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdvb2QuY29tIiwiZXhwIjoxNzI2MzQ5NzY3LCJ1c2VySWQiOjB9.UU8KQmHtc8F_6_J4YLES9YubPUaTx0aBLb9Gm5Jg0CY
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFscGhhQGdvb2QuY29tIiwiZXhwIjoxNzI2MzUxODQxLCJ1c2VySWQiOjF9.IYl7hl7FTuV5IhNnDc8Ihk1_DSDApswT1F4Xe-ZFAnQ
 
 
 {
-	"title": "IAWillTakeOurJobs",
-	"description": "That sucks man!",
-	"location": "NearFuture",
+	"title": "GoRocks",
+	"description": "IA WILL STEAL OUR JOBS FOR FUCK SAKE",
+	"location": "EVERYWHERE, WE ARE DOOOMED",
 	"datetime": "2035-01-01T15:30:00Z"
 }

@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"course.go/restapi/models"
-	"course.go/restapi/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,34 +37,24 @@ func getEvents(c *gin.Context) {
 }
 
 func createEvents(c *gin.Context) {
-	token := c.Request.Header.Get("Authorization")
-	if token == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "You are not allowed to perform this action", "error": "Empty token"})
-		return
-	}
 
-	userid, err := utils.ValidateJWT(token)
-
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "You are not allowed to perform this action", "error": "Invalid token"})
-		return
-	}
 	var event models.Event
-	err = c.ShouldBindJSON(&event)
+	err := c.ShouldBindJSON(&event)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "could not parse request data", "error": err.Error()})
 		return
 	}
 
-	event.UserID = userid
-	c.JSON(http.StatusCreated, gin.H{"message": "Event created", "event": event})
-	err = event.Save()
+	event.UserID = c.GetInt64("userid")
 
+	err = event.Save()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "could not create event"})
 		return
 	}
+	c.JSON(http.StatusCreated, gin.H{"message": "Event created", "event": event})
+
 }
 
 func updateEvent(c *gin.Context) {
