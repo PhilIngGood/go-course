@@ -78,4 +78,35 @@ func updateEvent(c *gin.Context) {
 		return
 	}
 
+	updatedEvent.ID = eventId
+
+	err = updatedEvent.Update()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update event"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "event updated successfully", "event": updatedEvent})
+}
+
+func deleteEvent(c *gin.Context) {
+	eventId, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to parse ID to int"})
+		return
+	}
+
+	event, err := models.GetEventByID(eventId)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to find event"})
+		return
+	}
+
+	if event.DeleteEvent() != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete event"})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "event deleted ", "event": event})
 }

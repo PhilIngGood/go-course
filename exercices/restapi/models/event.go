@@ -50,6 +50,27 @@ func (e Event) Save() error {
 	return err
 }
 
+func (e Event) Update() error {
+	query := `
+	UPDATE events
+	SET name = ?, description = ?, location = ?, dateTime = ?
+	WHERE id = ?
+	`
+
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.Title, e.Description, e.Location, e.DateTime, e.ID)
+
+	return err
+
+}
+
 func GetAllEvents() ([]Event, error) {
 	rows, err := db.DB.Query("SELECT * FROM events")
 
@@ -88,4 +109,19 @@ func GetEventByID(id int64) (*Event, error) {
 	}
 
 	return &event, nil
+}
+
+func (e Event) DeleteEvent() error {
+	query := "DELETE FROM events WHERE id = ?"
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID)
+
+	return err
 }

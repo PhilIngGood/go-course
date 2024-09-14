@@ -1,0 +1,9 @@
+PUT http://127.0.0.1:8080/events/2
+# content-type: application/json
+
+{
+	"title": "AllIsGood",
+	"description": "We'll be fine!",
+	"location": "Our planet Earth",
+	"datetime": "2035-01-01T15:30:00Z"
+}
