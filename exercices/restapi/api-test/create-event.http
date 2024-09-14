@@ -1,0 +1,9 @@
+POST http://127.0.0.1:8080/events
+# content-type: application/json
+
+{
+	"title": "endOfOurWorld",
+	"description": "That sucks man!",
+	"location": "Our planet Earth",
+	"datetime": "2035-01-01T15:30:00Z"
+}
