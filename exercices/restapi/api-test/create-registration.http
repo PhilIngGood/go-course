@@ -1,0 +1,4 @@
+POST http://127.0.0.1:8080/events/1/register
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJldGFAZ29vZC5jb20iLCJleHAiOjE3MjY0MDkwMjYsInVzZXJJZCI6Mn0.WHtyGt2l09KITDDhc7KowmXP1c5_c7O921sLZN_7k4A
+

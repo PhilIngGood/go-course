@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -64,10 +65,17 @@ func updateEvent(c *gin.Context) {
 		return
 	}
 
-	_, err = models.GetEventByID(eventId)
+	event, err := models.GetEventByID(eventId)
+	log.Println("context event userid :", c.GetInt64("userid"))
+	log.Println("db event userid :", event.UserID)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to fetch event by id"})
+		return
+	}
+
+	if c.GetInt64("userid") != event.UserID {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "you are not the owner of the event"})
 		return
 	}
 
@@ -105,10 +113,16 @@ func deleteEvent(c *gin.Context) {
 		return
 	}
 
+	if c.GetInt64("userid") != event.UserID {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "you are not the owner of the event"})
+		return
+	}
+
 	if event.DeleteEvent() != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to delete event"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "event deleted ", "event": event})
+
 }

@@ -23,8 +23,7 @@ func Authenticate(c *gin.Context) {
 	}
 
 	// Set add data to the context
-	c.Set("userId", userid)
-
+	c.Set("userid", userid)
 	// Execute next request handler
 	c.Next()
 }
